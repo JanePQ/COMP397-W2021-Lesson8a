@@ -24,18 +24,18 @@ public class PlayerBehaviour : MonoBehaviour
     public LayerMask groundMask;
     public bool isGrounded;
 
-    [Header("MiniMap")] 
+    [Header("MiniMap")]
     public GameObject miniMap;
 
-    [Header("Player Sounds")] 
+    [Header("Player Sounds")]
     public AudioSource jumpSound;
     public AudioSource hitSound;
 
 
-    [Header("HealthBar")] 
+    [Header("HealthBar")]
     public HealthBarScreenSpaceController healthBar;
 
-    [Header("Player Abilities")] 
+    [Header("Player Abilities")]
     [Range(0, 100)]
     public int health = 100;
 
@@ -49,8 +49,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
 
-       x = transform.position.x;
-       z = 0.0f;
+        x = transform.position.x;
+        z = 0.0f;
     }
 
     // Update is called once per frame - once every 16.6666ms
@@ -76,23 +76,32 @@ public class PlayerBehaviour : MonoBehaviour
 
         controller.Move(move * maxSpeed * Time.deltaTime);
 
-        if (Input.GetButton("Jump") && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
-            jumpSound.Play();
-        }
+        //if (Input.GetButton("Jump") && isGrounded)
+        //{
+        //    Jump();
+        //}
 
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            // toggle the MiniMap on/off
-            miniMap.SetActive(!miniMap.activeInHierarchy);
-        }
+        //if (Input.GetKeyDown(KeyCode.M))
+        //{
+        //    ToggleMiniMap();
+        //}
     }
 
+    void Jump()
+    {
+        velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
+        jumpSound.Play();
+    }
+
+    void ToggleMiniMap()
+    {
+        // toggle the MiniMap on/off
+        miniMap.SetActive(!miniMap.activeInHierarchy);
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -110,5 +119,17 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-   
+    public void OnJumpButtonPressed()
+    {
+        if (isGrounded)
+        {
+            Jump();
+        }
+
+    }
+
+    public void OnMapButtonPressed()
+    {
+        ToggleMiniMap();
+    }
 }
