@@ -6,6 +6,12 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public CharacterController controller;
 
+    [Header("Controls")]
+    public Joystick joystick;
+    public float horizontalSensitivity;
+    public float vertivalSensitivity;
+
+
     [Header("Movement")]
     public float maxSpeed = 10.0f;
     public float gravity = -30.0f;
@@ -33,10 +39,18 @@ public class PlayerBehaviour : MonoBehaviour
     [Range(0, 100)]
     public int health = 100;
 
+    private Vector3 m_touchesEnded;
+    private float x, z;
+
+    public Camera playerCam;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+       x = transform.position.x;
+       z = 0.0f;
     }
 
     // Update is called once per frame - once every 16.6666ms
@@ -50,8 +64,13 @@ public class PlayerBehaviour : MonoBehaviour
             velocity.y = -2.0f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        ////input for WebGL and desktop
+        //float x = Input.GetAxis("Horizontal");
+        //float z = Input.GetAxis("Vertical");
+
+        float x = joystick.Horizontal;
+        float z = joystick.Vertical;
+        Debug.Log("Joystick X: " + x);
 
         Vector3 move = transform.right * x + transform.forward * z;
 
